@@ -1,0 +1,1252 @@
+---
+source: tests/convert.rs
+expression: "load_wgsl(\"boids\")"
+---
+Module(
+  header: Header(
+    version: (1, 0, 0),
+    generator: 0,
+  ),
+  types: Arena(
+    data: [
+      Type(
+        name: None,
+        inner: Vector(
+          size: Bi,
+          kind: Float,
+          width: 32,
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Vector(
+          size: Quad,
+          kind: Float,
+          width: 32,
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Scalar(
+          kind: Float,
+          width: 32,
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Scalar(
+          kind: Sint,
+          width: 32,
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Struct(
+          members: [
+            StructMember(
+              name: Some("pos"),
+              binding: None,
+              ty: Handle(1),
+            ),
+            StructMember(
+              name: Some("vel"),
+              binding: None,
+              ty: Handle(1),
+            ),
+          ],
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Struct(
+          members: [
+            StructMember(
+              name: Some("deltaT"),
+              binding: None,
+              ty: Handle(3),
+            ),
+            StructMember(
+              name: Some("rule1Distance"),
+              binding: None,
+              ty: Handle(3),
+            ),
+            StructMember(
+              name: Some("rule2Distance"),
+              binding: None,
+              ty: Handle(3),
+            ),
+            StructMember(
+              name: Some("rule3Distance"),
+              binding: None,
+              ty: Handle(3),
+            ),
+            StructMember(
+              name: Some("rule1Scale"),
+              binding: None,
+              ty: Handle(3),
+            ),
+            StructMember(
+              name: Some("rule2Scale"),
+              binding: None,
+              ty: Handle(3),
+            ),
+            StructMember(
+              name: Some("rule3Scale"),
+              binding: None,
+              ty: Handle(3),
+            ),
+          ],
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Array(
+          base: Handle(5),
+          size: Static(5),
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Struct(
+          members: [
+            StructMember(
+              name: Some("particles"),
+              binding: None,
+              ty: Handle(7),
+            ),
+          ],
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Vector(
+          size: Tri,
+          kind: Uint,
+          width: 32,
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Scalar(
+          kind: Uint,
+          width: 32,
+        ),
+      ),
+    ],
+  ),
+  constants: Arena(
+    data: [
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Sint(0),
+        ty: Handle(4),
+      ),
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Sint(1),
+        ty: Handle(4),
+      ),
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Float(1),
+        ty: Handle(3),
+      ),
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Sint(5),
+        ty: Handle(4),
+      ),
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Float(0),
+        ty: Handle(3),
+      ),
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Float(0.1),
+        ty: Handle(3),
+      ),
+    ],
+  ),
+  global_variables: Arena(
+    data: [
+      GlobalVariable(
+        name: Some("a_particlePos"),
+        class: Input,
+        binding: Some(Location(0)),
+        ty: Handle(1),
+      ),
+      GlobalVariable(
+        name: Some("a_particleVel"),
+        class: Input,
+        binding: Some(Location(1)),
+        ty: Handle(1),
+      ),
+      GlobalVariable(
+        name: Some("a_pos"),
+        class: Input,
+        binding: Some(Location(2)),
+        ty: Handle(1),
+      ),
+      GlobalVariable(
+        name: Some("gl_Position"),
+        class: Output,
+        binding: Some(BuiltIn(Position)),
+        ty: Handle(2),
+      ),
+      GlobalVariable(
+        name: Some("fragColor"),
+        class: Output,
+        binding: Some(Location(0)),
+        ty: Handle(2),
+      ),
+      GlobalVariable(
+        name: Some("params"),
+        class: Uniform,
+        binding: Some(Descriptor(
+          set: 0,
+          binding: 0,
+        )),
+        ty: Handle(6),
+      ),
+      GlobalVariable(
+        name: Some("particlesA"),
+        class: StorageBuffer,
+        binding: Some(Descriptor(
+          set: 0,
+          binding: 1,
+        )),
+        ty: Handle(8),
+      ),
+      GlobalVariable(
+        name: Some("particlesB"),
+        class: StorageBuffer,
+        binding: Some(Descriptor(
+          set: 0,
+          binding: 2,
+        )),
+        ty: Handle(8),
+      ),
+      GlobalVariable(
+        name: Some("gl_GlobalInvocationID"),
+        class: Input,
+        binding: Some(BuiltIn(GlobalInvocationId)),
+        ty: Handle(9),
+      ),
+    ],
+  ),
+  functions: Arena(
+    data: [
+      Function(
+        name: Some("vtx_main"),
+        control: FunctionControl(
+          bits: 0,
+        ),
+        parameter_types: [],
+        return_type: None,
+        global_usage: [
+          GlobalUse(
+            bits: 1,
+          ),
+          GlobalUse(
+            bits: 1,
+          ),
+          GlobalUse(
+            bits: 1,
+          ),
+          GlobalUse(
+            bits: 2,
+          ),
+        ],
+        local_variables: Arena(
+          data: [
+            LocalVariable(
+              name: Some("angle"),
+              ty: Handle(3),
+              init: None,
+            ),
+            LocalVariable(
+              name: Some("pos"),
+              ty: Handle(1),
+              init: None,
+            ),
+          ],
+        ),
+        expressions: Arena(
+          data: [
+            GlobalVariable(Handle(3)),
+            GlobalVariable(Handle(4)),
+            GlobalVariable(Handle(1)),
+            GlobalVariable(Handle(2)),
+            AccessIndex(
+              base: Handle(4),
+              index: 0,
+            ),
+            AccessIndex(
+              base: Handle(4),
+              index: 1,
+            ),
+            Call(
+              name: "atan2",
+              arguments: [
+                Handle(5),
+                Handle(6),
+              ],
+            ),
+            Unary(
+              op: Negate,
+              expr: Handle(7),
+            ),
+            LocalVariable(Handle(1)),
+            AccessIndex(
+              base: Handle(1),
+              index: 0,
+            ),
+            Call(
+              name: "cos",
+              arguments: [
+                Handle(9),
+              ],
+            ),
+            Binary(
+              op: Multiply,
+              left: Handle(10),
+              right: Handle(11),
+            ),
+            AccessIndex(
+              base: Handle(1),
+              index: 1,
+            ),
+            Call(
+              name: "sin",
+              arguments: [
+                Handle(9),
+              ],
+            ),
+            Binary(
+              op: Multiply,
+              left: Handle(13),
+              right: Handle(14),
+            ),
+            Binary(
+              op: Subtract,
+              left: Handle(12),
+              right: Handle(15),
+            ),
+            AccessIndex(
+              base: Handle(1),
+              index: 0,
+            ),
+            Call(
+              name: "sin",
+              arguments: [
+                Handle(9),
+              ],
+            ),
+            Binary(
+              op: Multiply,
+              left: Handle(17),
+              right: Handle(18),
+            ),
+            AccessIndex(
+              base: Handle(1),
+              index: 1,
+            ),
+            Call(
+              name: "cos",
+              arguments: [
+                Handle(9),
+              ],
+            ),
+            Binary(
+              op: Multiply,
+              left: Handle(20),
+              right: Handle(21),
+            ),
+            Binary(
+              op: Add,
+              left: Handle(19),
+              right: Handle(22),
+            ),
+            Compose(
+              ty: Handle(1),
+              components: [
+                Handle(16),
+                Handle(23),
+              ],
+            ),
+            LocalVariable(Handle(2)),
+            Binary(
+              op: Add,
+              left: Handle(25),
+              right: Handle(3),
+            ),
+            Constant(Handle(1)),
+            Constant(Handle(2)),
+            Compose(
+              ty: Handle(2),
+              components: [
+                Handle(26),
+                Handle(27),
+                Handle(28),
+              ],
+            ),
+          ],
+        ),
+        body: [
+          Store(
+            pointer: Handle(9),
+            value: Handle(8),
+          ),
+          Store(
+            pointer: Handle(25),
+            value: Handle(24),
+          ),
+          Store(
+            pointer: Handle(2),
+            value: Handle(29),
+          ),
+          Return(
+            value: None,
+          ),
+        ],
+      ),
+      Function(
+        name: Some("frag_main"),
+        control: FunctionControl(
+          bits: 0,
+        ),
+        parameter_types: [],
+        return_type: None,
+        global_usage: [
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 2,
+          ),
+        ],
+        local_variables: Arena(
+          data: [],
+        ),
+        expressions: Arena(
+          data: [
+            GlobalVariable(Handle(3)),
+            GlobalVariable(Handle(4)),
+            GlobalVariable(Handle(5)),
+            GlobalVariable(Handle(1)),
+            GlobalVariable(Handle(2)),
+            Constant(Handle(3)),
+            Constant(Handle(3)),
+            Constant(Handle(3)),
+            Constant(Handle(3)),
+            Compose(
+              ty: Handle(2),
+              components: [
+                Handle(6),
+                Handle(7),
+                Handle(8),
+                Handle(9),
+              ],
+            ),
+          ],
+        ),
+        body: [
+          Store(
+            pointer: Handle(3),
+            value: Handle(10),
+          ),
+          Return(
+            value: None,
+          ),
+        ],
+      ),
+      Function(
+        name: Some("compute_main"),
+        control: FunctionControl(
+          bits: 0,
+        ),
+        parameter_types: [],
+        return_type: None,
+        global_usage: [
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 1,
+          ),
+          GlobalUse(
+            bits: 1,
+          ),
+          GlobalUse(
+            bits: 2,
+          ),
+          GlobalUse(
+            bits: 1,
+          ),
+        ],
+        local_variables: Arena(
+          data: [
+            LocalVariable(
+              name: Some("index"),
+              ty: Handle(10),
+              init: None,
+            ),
+            LocalVariable(
+              name: Some("vPos"),
+              ty: Handle(1),
+              init: None,
+            ),
+            LocalVariable(
+              name: Some("vVel"),
+              ty: Handle(1),
+              init: None,
+            ),
+            LocalVariable(
+              name: Some("cMass"),
+              ty: Handle(1),
+              init: None,
+            ),
+            LocalVariable(
+              name: Some("cVel"),
+              ty: Handle(1),
+              init: None,
+            ),
+            LocalVariable(
+              name: Some("colVel"),
+              ty: Handle(1),
+              init: None,
+            ),
+            LocalVariable(
+              name: Some("cMassCount"),
+              ty: Handle(4),
+              init: Some(Handle(34)),
+            ),
+            LocalVariable(
+              name: Some("cVelCount"),
+              ty: Handle(4),
+              init: Some(Handle(36)),
+            ),
+            LocalVariable(
+              name: Some("pos"),
+              ty: Handle(1),
+              init: None,
+            ),
+            LocalVariable(
+              name: Some("vel"),
+              ty: Handle(1),
+              init: None,
+            ),
+            LocalVariable(
+              name: Some("i"),
+              ty: Handle(10),
+              init: Some(Handle(40)),
+            ),
+          ],
+        ),
+        expressions: Arena(
+          data: [
+            GlobalVariable(Handle(4)),
+            GlobalVariable(Handle(9)),
+            GlobalVariable(Handle(7)),
+            GlobalVariable(Handle(8)),
+            GlobalVariable(Handle(3)),
+            GlobalVariable(Handle(5)),
+            GlobalVariable(Handle(1)),
+            GlobalVariable(Handle(2)),
+            GlobalVariable(Handle(6)),
+            AccessIndex(
+              base: Handle(2),
+              index: 0,
+            ),
+            LocalVariable(Handle(1)),
+            Constant(Handle(4)),
+            Binary(
+              op: GreaterEqual,
+              left: Handle(11),
+              right: Handle(12),
+            ),
+            AccessIndex(
+              base: Handle(3),
+              index: 0,
+            ),
+            Access(
+              base: Handle(14),
+              index: Handle(11),
+            ),
+            AccessIndex(
+              base: Handle(15),
+              index: 0,
+            ),
+            LocalVariable(Handle(2)),
+            AccessIndex(
+              base: Handle(3),
+              index: 0,
+            ),
+            Access(
+              base: Handle(18),
+              index: Handle(11),
+            ),
+            AccessIndex(
+              base: Handle(19),
+              index: 1,
+            ),
+            LocalVariable(Handle(3)),
+            Constant(Handle(1)),
+            Constant(Handle(1)),
+            Compose(
+              ty: Handle(1),
+              components: [
+                Handle(22),
+                Handle(23),
+              ],
+            ),
+            LocalVariable(Handle(4)),
+            Constant(Handle(1)),
+            Constant(Handle(1)),
+            Compose(
+              ty: Handle(1),
+              components: [
+                Handle(26),
+                Handle(27),
+              ],
+            ),
+            LocalVariable(Handle(5)),
+            Constant(Handle(1)),
+            Constant(Handle(1)),
+            Compose(
+              ty: Handle(1),
+              components: [
+                Handle(30),
+                Handle(31),
+              ],
+            ),
+            LocalVariable(Handle(6)),
+            Constant(Handle(1)),
+            LocalVariable(Handle(7)),
+            Constant(Handle(1)),
+            LocalVariable(Handle(8)),
+            LocalVariable(Handle(9)),
+            LocalVariable(Handle(10)),
+            Constant(Handle(1)),
+            LocalVariable(Handle(11)),
+            Constant(Handle(4)),
+            Binary(
+              op: GreaterEqual,
+              left: Handle(41),
+              right: Handle(42),
+            ),
+            Binary(
+              op: Equal,
+              left: Handle(41),
+              right: Handle(11),
+            ),
+            AccessIndex(
+              base: Handle(3),
+              index: 0,
+            ),
+            Access(
+              base: Handle(45),
+              index: Handle(41),
+            ),
+            AccessIndex(
+              base: Handle(46),
+              index: 0,
+            ),
+            AccessIndex(
+              base: Handle(47),
+              index: 0,
+            ),
+            AccessIndex(
+              base: Handle(47),
+              index: 1,
+            ),
+            Compose(
+              ty: Handle(1),
+              components: [
+                Handle(48),
+                Handle(49),
+              ],
+            ),
+            AccessIndex(
+              base: Handle(3),
+              index: 0,
+            ),
+            Access(
+              base: Handle(51),
+              index: Handle(41),
+            ),
+            AccessIndex(
+              base: Handle(52),
+              index: 1,
+            ),
+            AccessIndex(
+              base: Handle(53),
+              index: 0,
+            ),
+            AccessIndex(
+              base: Handle(53),
+              index: 1,
+            ),
+            Compose(
+              ty: Handle(1),
+              components: [
+                Handle(54),
+                Handle(55),
+              ],
+            ),
+            Call(
+              name: "distance",
+              arguments: [
+                Handle(38),
+                Handle(17),
+              ],
+            ),
+            AccessIndex(
+              base: Handle(9),
+              index: 1,
+            ),
+            Binary(
+              op: Less,
+              left: Handle(57),
+              right: Handle(58),
+            ),
+            Binary(
+              op: Add,
+              left: Handle(25),
+              right: Handle(38),
+            ),
+            Constant(Handle(2)),
+            Binary(
+              op: Add,
+              left: Handle(35),
+              right: Handle(61),
+            ),
+            Call(
+              name: "distance",
+              arguments: [
+                Handle(38),
+                Handle(17),
+              ],
+            ),
+            AccessIndex(
+              base: Handle(9),
+              index: 2,
+            ),
+            Binary(
+              op: Less,
+              left: Handle(63),
+              right: Handle(64),
+            ),
+            Binary(
+              op: Subtract,
+              left: Handle(38),
+              right: Handle(17),
+            ),
+            Binary(
+              op: Subtract,
+              left: Handle(33),
+              right: Handle(66),
+            ),
+            Call(
+              name: "distance",
+              arguments: [
+                Handle(38),
+                Handle(17),
+              ],
+            ),
+            AccessIndex(
+              base: Handle(9),
+              index: 3,
+            ),
+            Binary(
+              op: Less,
+              left: Handle(68),
+              right: Handle(69),
+            ),
+            Binary(
+              op: Add,
+              left: Handle(29),
+              right: Handle(39),
+            ),
+            Constant(Handle(2)),
+            Binary(
+              op: Add,
+              left: Handle(37),
+              right: Handle(72),
+            ),
+            Constant(Handle(2)),
+            Binary(
+              op: Add,
+              left: Handle(41),
+              right: Handle(74),
+            ),
+            Constant(Handle(1)),
+            Binary(
+              op: Greater,
+              left: Handle(35),
+              right: Handle(76),
+            ),
+            Compose(
+              ty: Handle(1),
+              components: [
+                Handle(35),
+                Handle(35),
+              ],
+            ),
+            Binary(
+              op: Divide,
+              left: Handle(25),
+              right: Handle(78),
+            ),
+            Binary(
+              op: Add,
+              left: Handle(79),
+              right: Handle(17),
+            ),
+            Constant(Handle(1)),
+            Binary(
+              op: Greater,
+              left: Handle(37),
+              right: Handle(81),
+            ),
+            Compose(
+              ty: Handle(1),
+              components: [
+                Handle(37),
+                Handle(37),
+              ],
+            ),
+            Binary(
+              op: Divide,
+              left: Handle(29),
+              right: Handle(83),
+            ),
+            AccessIndex(
+              base: Handle(9),
+              index: 4,
+            ),
+            Binary(
+              op: Multiply,
+              left: Handle(25),
+              right: Handle(85),
+            ),
+            Binary(
+              op: Add,
+              left: Handle(21),
+              right: Handle(86),
+            ),
+            AccessIndex(
+              base: Handle(9),
+              index: 5,
+            ),
+            Binary(
+              op: Multiply,
+              left: Handle(33),
+              right: Handle(88),
+            ),
+            Binary(
+              op: Add,
+              left: Handle(87),
+              right: Handle(89),
+            ),
+            AccessIndex(
+              base: Handle(9),
+              index: 6,
+            ),
+            Binary(
+              op: Multiply,
+              left: Handle(29),
+              right: Handle(91),
+            ),
+            Binary(
+              op: Add,
+              left: Handle(90),
+              right: Handle(92),
+            ),
+            Call(
+              name: "normalize",
+              arguments: [
+                Handle(21),
+              ],
+            ),
+            Call(
+              name: "length",
+              arguments: [
+                Handle(21),
+              ],
+            ),
+            Constant(Handle(5)),
+            Constant(Handle(6)),
+            Call(
+              name: "fclamp",
+              arguments: [
+                Handle(95),
+                Handle(96),
+                Handle(97),
+              ],
+            ),
+            Binary(
+              op: Multiply,
+              left: Handle(94),
+              right: Handle(98),
+            ),
+            AccessIndex(
+              base: Handle(9),
+              index: 0,
+            ),
+            Binary(
+              op: Multiply,
+              left: Handle(21),
+              right: Handle(100),
+            ),
+            Binary(
+              op: Add,
+              left: Handle(17),
+              right: Handle(101),
+            ),
+            AccessIndex(
+              base: Handle(17),
+              index: 0,
+            ),
+            Constant(Handle(3)),
+            Unary(
+              op: Negate,
+              expr: Handle(104),
+            ),
+            Binary(
+              op: Less,
+              left: Handle(103),
+              right: Handle(105),
+            ),
+            AccessIndex(
+              base: Handle(17),
+              index: 0,
+            ),
+            Constant(Handle(3)),
+            AccessIndex(
+              base: Handle(17),
+              index: 0,
+            ),
+            Constant(Handle(3)),
+            Binary(
+              op: Greater,
+              left: Handle(109),
+              right: Handle(110),
+            ),
+            AccessIndex(
+              base: Handle(17),
+              index: 0,
+            ),
+            Constant(Handle(3)),
+            Unary(
+              op: Negate,
+              expr: Handle(113),
+            ),
+            AccessIndex(
+              base: Handle(17),
+              index: 1,
+            ),
+            Constant(Handle(3)),
+            Unary(
+              op: Negate,
+              expr: Handle(116),
+            ),
+            Binary(
+              op: Less,
+              left: Handle(115),
+              right: Handle(117),
+            ),
+            AccessIndex(
+              base: Handle(17),
+              index: 1,
+            ),
+            Constant(Handle(3)),
+            AccessIndex(
+              base: Handle(17),
+              index: 1,
+            ),
+            Constant(Handle(3)),
+            Binary(
+              op: Greater,
+              left: Handle(121),
+              right: Handle(122),
+            ),
+            AccessIndex(
+              base: Handle(17),
+              index: 1,
+            ),
+            Constant(Handle(3)),
+            Unary(
+              op: Negate,
+              expr: Handle(125),
+            ),
+            AccessIndex(
+              base: Handle(4),
+              index: 0,
+            ),
+            Access(
+              base: Handle(127),
+              index: Handle(11),
+            ),
+            AccessIndex(
+              base: Handle(128),
+              index: 0,
+            ),
+            AccessIndex(
+              base: Handle(4),
+              index: 0,
+            ),
+            Access(
+              base: Handle(130),
+              index: Handle(11),
+            ),
+            AccessIndex(
+              base: Handle(131),
+              index: 1,
+            ),
+          ],
+        ),
+        body: [
+          Store(
+            pointer: Handle(11),
+            value: Handle(10),
+          ),
+          If(
+            condition: Handle(13),
+            accept: [
+              Return(
+                value: None,
+              ),
+            ],
+            reject: [],
+          ),
+          Store(
+            pointer: Handle(17),
+            value: Handle(16),
+          ),
+          Store(
+            pointer: Handle(21),
+            value: Handle(20),
+          ),
+          Store(
+            pointer: Handle(25),
+            value: Handle(24),
+          ),
+          Store(
+            pointer: Handle(29),
+            value: Handle(28),
+          ),
+          Store(
+            pointer: Handle(33),
+            value: Handle(32),
+          ),
+          Empty,
+          Empty,
+          Empty,
+          Empty,
+          Empty,
+          Loop(
+            body: [
+              If(
+                condition: Handle(43),
+                accept: [
+                  Break,
+                  Empty,
+                ],
+                reject: [],
+              ),
+              If(
+                condition: Handle(44),
+                accept: [
+                  Continue,
+                  Empty,
+                ],
+                reject: [],
+              ),
+              Store(
+                pointer: Handle(38),
+                value: Handle(50),
+              ),
+              Store(
+                pointer: Handle(39),
+                value: Handle(56),
+              ),
+              If(
+                condition: Handle(59),
+                accept: [
+                  Store(
+                    pointer: Handle(25),
+                    value: Handle(60),
+                  ),
+                  Store(
+                    pointer: Handle(35),
+                    value: Handle(62),
+                  ),
+                ],
+                reject: [],
+              ),
+              If(
+                condition: Handle(65),
+                accept: [
+                  Store(
+                    pointer: Handle(33),
+                    value: Handle(67),
+                  ),
+                ],
+                reject: [],
+              ),
+              If(
+                condition: Handle(70),
+                accept: [
+                  Store(
+                    pointer: Handle(29),
+                    value: Handle(71),
+                  ),
+                  Store(
+                    pointer: Handle(37),
+                    value: Handle(73),
+                  ),
+                ],
+                reject: [],
+              ),
+            ],
+            continuing: [
+              Store(
+                pointer: Handle(41),
+                value: Handle(75),
+              ),
+            ],
+          ),
+          If(
+            condition: Handle(77),
+            accept: [
+              Store(
+                pointer: Handle(25),
+                value: Handle(80),
+              ),
+            ],
+            reject: [],
+          ),
+          If(
+            condition: Handle(82),
+            accept: [
+              Store(
+                pointer: Handle(29),
+                value: Handle(84),
+              ),
+            ],
+            reject: [],
+          ),
+          Store(
+            pointer: Handle(21),
+            value: Handle(93),
+          ),
+          Store(
+            pointer: Handle(21),
+            value: Handle(99),
+          ),
+          Store(
+            pointer: Handle(17),
+            value: Handle(102),
+          ),
+          If(
+            condition: Handle(106),
+            accept: [
+              Store(
+                pointer: Handle(107),
+                value: Handle(108),
+              ),
+            ],
+            reject: [],
+          ),
+          If(
+            condition: Handle(111),
+            accept: [
+              Store(
+                pointer: Handle(112),
+                value: Handle(114),
+              ),
+            ],
+            reject: [],
+          ),
+          If(
+            condition: Handle(118),
+            accept: [
+              Store(
+                pointer: Handle(119),
+                value: Handle(120),
+              ),
+            ],
+            reject: [],
+          ),
+          If(
+            condition: Handle(123),
+            accept: [
+              Store(
+                pointer: Handle(124),
+                value: Handle(126),
+              ),
+            ],
+            reject: [],
+          ),
+          Store(
+            pointer: Handle(129),
+            value: Handle(17),
+          ),
+          Store(
+            pointer: Handle(132),
+            value: Handle(21),
+          ),
+          Return(
+            value: None,
+          ),
+        ],
+      ),
+    ],
+  ),
+  entry_points: [
+    EntryPoint(
+      exec_model: Vertex,
+      name: "main",
+      function: Handle(1),
+    ),
+    EntryPoint(
+      exec_model: Fragment,
+      name: "main",
+      function: Handle(2),
+    ),
+    EntryPoint(
+      exec_model: GLCompute,
+      name: "main",
+      function: Handle(3),
+    ),
+  ],
+)

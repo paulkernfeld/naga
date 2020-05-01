@@ -1,0 +1,255 @@
+---
+source: tests/convert.rs
+expression: "load_wgsl(\"quad\")"
+---
+Module(
+  header: Header(
+    version: (1, 0, 0),
+    generator: 0,
+  ),
+  types: Arena(
+    data: [
+      Type(
+        name: None,
+        inner: Scalar(
+          kind: Float,
+          width: 32,
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Vector(
+          size: Bi,
+          kind: Float,
+          width: 32,
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Vector(
+          size: Quad,
+          kind: Float,
+          width: 32,
+        ),
+      ),
+      Type(
+        name: None,
+        inner: Scalar(
+          kind: Sint,
+          width: 32,
+        ),
+      ),
+    ],
+  ),
+  constants: Arena(
+    data: [
+      Constant(
+        name: Some("c_scale"),
+        specialization: None,
+        inner: Float(1.2),
+        ty: Handle(1),
+      ),
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Float(0),
+        ty: Handle(1),
+      ),
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Float(1),
+        ty: Handle(1),
+      ),
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Sint(1),
+        ty: Handle(4),
+      ),
+      Constant(
+        name: None,
+        specialization: None,
+        inner: Sint(0),
+        ty: Handle(4),
+      ),
+    ],
+  ),
+  global_variables: Arena(
+    data: [
+      GlobalVariable(
+        name: Some("a_pos"),
+        class: Input,
+        binding: Some(Location(0)),
+        ty: Handle(2),
+      ),
+      GlobalVariable(
+        name: Some("a_uv"),
+        class: Input,
+        binding: Some(Location(1)),
+        ty: Handle(2),
+      ),
+      GlobalVariable(
+        name: Some("v_uv"),
+        class: Output,
+        binding: Some(Location(0)),
+        ty: Handle(2),
+      ),
+      GlobalVariable(
+        name: Some("o_position"),
+        class: Output,
+        binding: Some(BuiltIn(Position)),
+        ty: Handle(3),
+      ),
+      GlobalVariable(
+        name: Some("a_uv"),
+        class: Input,
+        binding: Some(Location(0)),
+        ty: Handle(2),
+      ),
+      GlobalVariable(
+        name: Some("o_color"),
+        class: Output,
+        binding: Some(Location(0)),
+        ty: Handle(3),
+      ),
+    ],
+  ),
+  functions: Arena(
+    data: [
+      Function(
+        name: Some("main_vert"),
+        control: FunctionControl(
+          bits: 0,
+        ),
+        parameter_types: [],
+        return_type: None,
+        global_usage: [
+          GlobalUse(
+            bits: 1,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 2,
+          ),
+        ],
+        local_variables: Arena(
+          data: [],
+        ),
+        expressions: Arena(
+          data: [
+            Constant(Handle(1)),
+            GlobalVariable(Handle(1)),
+            GlobalVariable(Handle(3)),
+            GlobalVariable(Handle(4)),
+            GlobalVariable(Handle(2)),
+            Binary(
+              op: Multiply,
+              left: Handle(1),
+              right: Handle(2),
+            ),
+            Constant(Handle(2)),
+            Constant(Handle(3)),
+            Compose(
+              ty: Handle(3),
+              components: [
+                Handle(6),
+                Handle(7),
+                Handle(8),
+              ],
+            ),
+          ],
+        ),
+        body: [
+          Store(
+            pointer: Handle(4),
+            value: Handle(9),
+          ),
+          Return(
+            value: None,
+          ),
+        ],
+      ),
+      Function(
+        name: Some("main_frag"),
+        control: FunctionControl(
+          bits: 0,
+        ),
+        parameter_types: [],
+        return_type: None,
+        global_usage: [
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 0,
+          ),
+          GlobalUse(
+            bits: 2,
+          ),
+        ],
+        local_variables: Arena(
+          data: [],
+        ),
+        expressions: Arena(
+          data: [
+            Constant(Handle(1)),
+            GlobalVariable(Handle(1)),
+            GlobalVariable(Handle(3)),
+            GlobalVariable(Handle(4)),
+            GlobalVariable(Handle(6)),
+            GlobalVariable(Handle(5)),
+            Constant(Handle(4)),
+            Constant(Handle(5)),
+            Constant(Handle(5)),
+            Constant(Handle(4)),
+            Compose(
+              ty: Handle(3),
+              components: [
+                Handle(7),
+                Handle(8),
+                Handle(9),
+                Handle(10),
+              ],
+            ),
+          ],
+        ),
+        body: [
+          Store(
+            pointer: Handle(5),
+            value: Handle(11),
+          ),
+          Return(
+            value: None,
+          ),
+        ],
+      ),
+    ],
+  ),
+  entry_points: [
+    EntryPoint(
+      exec_model: Vertex,
+      name: "main",
+      function: Handle(1),
+    ),
+    EntryPoint(
+      exec_model: Fragment,
+      name: "main",
+      function: Handle(2),
+    ),
+  ],
+)

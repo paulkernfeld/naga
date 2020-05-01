@@ -59,3 +59,15 @@ fn boids_serde_round_trip() {
     let module_ser_ser = ron::ser::to_string(&module_de).unwrap();
     assert_eq!(module_ser, module_ser_ser);
 }
+
+#[test]
+#[cfg(feature = "serialize")]
+fn quad_snapshot() {
+    insta::assert_ron_snapshot!(load_wgsl("quad"));
+}
+
+#[test]
+#[cfg(feature = "serialize")]
+fn boids_snapshot() {
+    insta::assert_ron_snapshot!(load_wgsl("boids"));
+}
